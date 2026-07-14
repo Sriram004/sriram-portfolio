@@ -1,0 +1,919 @@
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#060814;--bg2:#0A0F1E;--bg3:#0E1628;--bg4:#131d35;--c:#00E5C4;--p:#8B5CF6;--bl:#3B82F6;--g:#10B981;--o:#F59E0B;--r:#EF4444;--tx:#E2E8F0;--t2:#94A3B8;--mu:#475569;--br:rgba(255,255,255,.07);--bc:rgba(0,229,196,.22);--bp:rgba(139,92,246,.25);--mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;--sw:185px}
+html{scroll-behavior:smooth}body{font-family:var(--sans);background:var(--bg);color:var(--tx);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(0,229,196,.3);border-radius:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes gpulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+@keyframes scn{0%{top:-50px}100%{top:110%}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* SIDEBAR */
+.ls{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--bg2);border-right:1px solid var(--br);z-index:200;display:flex;flex-direction:column}
+.ls-logo{padding:.9rem 1rem .8rem;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:9px}
+.ls-sh{width:30px;height:30px;background:linear-gradient(135deg,#1e2d5a,#0d1535);border:1px solid rgba(139,92,246,.4);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.ls-nm{font-size:12.5px;font-weight:800;letter-spacing:.3px}.ls-nm em{color:var(--c);font-style:normal}
+.ls-sub{font-family:var(--mono);font-size:8.5px;color:var(--mu);letter-spacing:.5px;margin-top:1px}
+.ls-nav{padding:.6rem 0;flex:1;overflow-y:auto}
+.ls-a{display:flex;align-items:center;gap:9px;padding:.52rem 1rem;font-size:11px;font-weight:600;color:var(--t2);text-decoration:none;border-left:2px solid transparent;cursor:pointer;transition:all .15s;letter-spacing:.4px}
+.ls-a:hover,.ls-a.active{color:var(--c);background:rgba(0,229,196,.05);border-left-color:var(--c)}
+.ls-ic{font-size:13px;width:18px;text-align:center}
+.ls-bot{padding:.75rem 1rem;border-top:1px solid var(--br)}
+.ls-sl{font-family:var(--mono);font-size:8.5px;color:var(--mu);letter-spacing:1px;margin-bottom:2px}
+.ls-ok{font-family:var(--mono);font-size:8.5px;color:var(--g);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.ls-gd{width:5px;height:5px;background:var(--g);border-radius:50%;box-shadow:0 0 5px var(--g);animation:blink 1.5s infinite}
+.ls-socs{display:flex;gap:9px;margin-bottom:7px}
+.ls-soc{color:var(--t2);text-decoration:none;font-size:12px;transition:color .15s}.ls-soc:hover{color:var(--c)}
+.ls-arrs{display:flex;gap:5px}
+.ls-arr{width:24px;height:20px;border:1px solid var(--br);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mu);cursor:pointer;transition:all .15s}
+.ls-arr:hover{border-color:var(--bc);color:var(--c)}
+/* MAIN */
+.main{margin-left:var(--sw)}
+/* TOP STRIP */
+.ts{background:rgba(6,8,20,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--br);padding:0 1.5rem;height:42px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.ts-l{font-family:var(--mono);font-size:10px;color:var(--c);letter-spacing:1.5px}
+.ts-l span{color:var(--mu);margin:0 7px}
+.ts-r{display:flex;align-items:center;gap:.7rem}
+.ts-chip{display:flex;align-items:center;gap:5px;background:var(--bg2);border:1px solid var(--br);border-radius:5px;padding:3px 9px;font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:.5px}
+.ts-gd{width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 5px var(--g);animation:blink 1.5s infinite}
+/* HERO */
+.hero{display:grid;grid-template-columns:252px 1fr 282px;border-bottom:1px solid var(--br)}
+.h-pp{position:relative;display:flex;align-items:center;justify-content:center;padding:2rem 1.5rem;border-right:1px solid var(--br);background:linear-gradient(155deg,rgba(0,229,196,.06),rgba(59,130,246,.04) 50%,transparent);overflow:hidden}
+.h-pg{position:absolute;inset:0;background:radial-gradient(circle at 50% 58%,rgba(0,229,196,.18) 0%,rgba(59,130,246,.1) 45%,transparent 70%);filter:blur(28px);animation:gpulse 4s ease-in-out infinite}
+.ph-w{position:relative;width:200px;height:200px;display:flex;align-items:center;justify-content:center;animation:float 5s ease-in-out infinite;z-index:1}
+.ph-gl{position:absolute;inset:-20px;background:radial-gradient(circle,rgba(0,229,196,.35) 0%,rgba(59,130,246,.12) 50%,transparent 70%);filter:blur(18px)}
+.ph-r1{position:absolute;width:214px;height:214px;border-radius:50%;border:2px solid rgba(0,229,196,.75);box-shadow:0 0 22px rgba(0,229,196,.4),0 0 55px rgba(0,229,196,.15);animation:spin 10s linear infinite}
+.ph-r2{position:absolute;width:228px;height:228px;border-radius:50%;border:1px solid rgba(0,229,196,.28);animation:spin 18s linear infinite reverse}
+.ph-r3{position:absolute;width:240px;height:240px;border-radius:50%;border:1px dashed rgba(0,229,196,.18);animation:spin 26s linear infinite}
+.ph-fr{position:relative;width:184px;height:184px;border-radius:50%;overflow:hidden;border:2.5px solid rgba(0,229,196,.8);box-shadow:0 0 0 4px rgba(0,229,196,.12),0 0 42px rgba(0,229,196,.55),0 0 85px rgba(0,229,196,.2);z-index:2}
+.ph-img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.ph-fb{width:100%;height:100%;background:linear-gradient(135deg,#0C1220,#1a0d3a);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:3rem;font-weight:700;color:var(--p)}
+.ph-sc{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.08) 3px,rgba(0,0,0,.08) 4px);pointer-events:none;z-index:3}
+.ph-sc::after{content:'';position:absolute;left:0;right:0;height:48px;background:linear-gradient(transparent,rgba(139,92,246,.1),transparent);animation:scn 3.5s linear infinite}
+.ph-orb{position:absolute;width:214px;height:214px;animation:spin 10s linear infinite;pointer-events:none}
+.ph-dot{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);width:7px;height:7px;background:var(--c);border-radius:50%;box-shadow:0 0 8px var(--c),0 0 16px var(--c)}
+/* Text panel */
+.h-tp{padding:2rem 1.8rem;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--br)}
+.h-hello{font-family:var(--mono);font-size:10px;color:var(--t2);letter-spacing:3px;text-transform:uppercase;margin-bottom:.4rem}
+.h-name{font-size:clamp(2.2rem,3.6vw,3.5rem);font-weight:900;line-height:1.05;letter-spacing:-2px;color:var(--tx);text-transform:uppercase;margin-bottom:.75rem}
+.h-name em{color:var(--c);font-style:normal}
+.h-roles{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem}
+.h-rt{background:rgba(0,229,196,.07);border:1px solid var(--bc);border-radius:4px;padding:4px 11px;font-family:var(--mono);font-size:9px;color:var(--c);letter-spacing:.8px;text-transform:uppercase}
+.h-desc{font-size:13px;color:var(--t2);line-height:1.75;max-width:465px;margin-bottom:1.1rem}
+.h-cts{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.h-ct{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:5px 11px;font-family:var(--mono);font-size:9.5px;color:var(--t2);text-decoration:none;transition:all .15s}
+.h-ct:hover{border-color:var(--bc);color:var(--c)}
+.h-dl{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,196,.08);border:1.5px solid var(--c);border-radius:6px;padding:9px 20px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--c);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:all .2s;box-shadow:0 0 14px rgba(0,229,196,.12)}
+.h-dl:hover{background:rgba(0,229,196,.15);box-shadow:0 0 24px rgba(0,229,196,.22)}
+/* Right panel */
+.h-rp{display:flex;flex-direction:column;background:var(--bg2)}
+.rp-hd{display:flex;align-items:center;justify-content:space-between;padding:7px 11px;border-bottom:1px solid var(--br);font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:1px;text-transform:uppercase}
+.rp-live{display:flex;align-items:center;gap:4px;font-size:8.5px}
+.rp-ld{width:4px;height:4px;border-radius:50%;animation:blink 1s infinite}
+/* TIF */
+.tif{border-bottom:1px solid var(--br)}
+.tif-bd{padding:9px 11px;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tif-it{background:var(--bg3);border:1px solid var(--br);border-radius:5px;padding:8px 9px}
+.tif-ic{font-size:9px;color:var(--o);font-family:var(--mono);margin-bottom:3px;letter-spacing:.5px;text-transform:uppercase}
+.tif-val{font-size:1.3rem;font-weight:900;color:var(--tx);letter-spacing:-1px;line-height:1}
+.tif-lbl{font-size:8.5px;color:var(--t2);font-family:var(--mono)}
+.tif-ft{padding:5px 11px;border-top:1px solid var(--br)}
+.tif-ft a{font-family:var(--mono);font-size:9px;color:var(--c);text-decoration:none;letter-spacing:.5px}
+.tif-ft a:hover{text-decoration:underline}
+.lam{flex:1;display:flex;flex-direction:column}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--br);border-bottom:1px solid var(--br)}
+.si{background:var(--bg2);padding:.8rem 1rem;display:flex;align-items:center;gap:10px;transition:background .2s;cursor:default}
+.si:hover{background:var(--bg3)}
+.si-n{font-size:1.25rem;font-weight:900;color:var(--tx);letter-spacing:-1px;line-height:1}
+.si-l{font-size:9px;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+/* MID GRID */
+.mid{display:grid;grid-template-columns:335px 1fr 290px;gap:1px;background:var(--br);border-bottom:1px solid var(--br)}
+.mp{background:var(--bg2);display:flex;flex-direction:column;overflow:hidden}
+.mp-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:1px solid var(--br);font-family:var(--mono);font-size:10px;color:var(--t2);letter-spacing:1px;text-transform:uppercase;font-weight:600;flex-shrink:0}
+.mp-hd a{color:var(--c);text-decoration:none;font-size:10px}.mp-hd a:hover{text-decoration:underline}
+.mp-ft{padding:8px 13px;border-top:1px solid var(--br);font-family:var(--mono);font-size:10px;text-align:center;margin-top:auto;flex-shrink:0}
+.mp-ft a{color:var(--c);text-decoration:none;letter-spacing:.5px}
+/* Exp timeline (dashboard card) */
+.et{padding:0 13px;flex:1}
+.et-it{position:relative;padding:10px 0 10px 20px;border-bottom:1px solid var(--br)}
+.et-it:last-of-type{border-bottom:none}
+.et-it::before{content:'';position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%}
+.et-it:nth-child(1)::before{background:var(--g);box-shadow:0 0 7px var(--g)}
+.et-it:nth-child(2)::before{background:var(--bl);box-shadow:0 0 7px var(--bl)}
+.et-it:nth-child(3)::before{background:var(--p);box-shadow:0 0 7px var(--p)}
+.et-it::after{content:'';position:absolute;left:3.5px;top:22px;bottom:-10px;width:1px;background:var(--br)}
+.et-it:last-of-type::after{display:none}
+.et-r{font-size:12px;font-weight:700;color:var(--tx)}.et-co{font-size:11px;color:var(--c);margin-top:1px}
+.et-dt{font-family:var(--mono);font-size:9px;color:var(--mu);margin:2px 0 4px;display:flex;justify-content:space-between}
+.et-ds{font-size:11px;color:var(--t2);line-height:1.5}
+/* Featured Projects */
+.fp{flex:1;overflow-y:auto}
+.fp-it{padding:9px 13px;border-bottom:1px solid var(--br);display:flex;gap:9px;cursor:pointer;transition:background .15s}
+.fp-it:hover{background:rgba(0,229,196,.03)}
+.fp-lt{flex:1}
+.fp-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.fp-ic{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.fp-n{font-size:12px;font-weight:700;color:var(--tx);flex:1}
+.fp-badge{font-family:var(--mono);font-size:7.5px;background:rgba(0,229,196,.1);color:var(--c);border:1px solid var(--bc);border-radius:3px;padding:1px 5px;letter-spacing:.5px}
+.fp-d{font-size:11px;color:var(--t2);line-height:1.45;margin-bottom:5px}
+.fp-tags{display:flex;gap:3px;flex-wrap:wrap}
+.fp-tag{background:var(--bg4);border:1px solid var(--br);border-radius:3px;padding:2px 7px;font-family:var(--mono);font-size:8.5px;color:var(--p)}
+.fp-pv{width:70px;flex-shrink:0;border-radius:5px;overflow:hidden;background:var(--bg3);border:1px solid var(--br)}
+/* Activity Feed */
+.af{border-top:1px solid var(--br);flex-shrink:0}
+.af-hd{display:flex;align-items:center;justify-content:space-between;padding:7px 13px;border-bottom:1px solid var(--br);font-family:var(--mono);font-size:10px;color:var(--t2);letter-spacing:1px;text-transform:uppercase}
+.af-rt{display:flex;align-items:center;gap:4px;font-size:8.5px;color:var(--g)}
+.af-rld{width:4px;height:4px;background:var(--g);border-radius:50%;box-shadow:0 0 4px var(--g);animation:blink 1s infinite}
+.af-it{padding:7px 13px;border-bottom:1px solid var(--br);display:flex;align-items:flex-start;gap:8px;animation:fadeIn .3s ease}
+.af-ico{font-size:13px;flex-shrink:0;margin-top:1px}
+.af-b{flex:1}
+.af-ev{font-size:11px;font-weight:600;color:var(--tx)}.af-sub{font-size:10px;color:var(--t2)}.af-tm{font-family:var(--mono);font-size:9px;color:var(--mu);margin-top:1px}
+.af-ft{padding:7px 13px;text-align:center;border-top:1px solid var(--br)}
+.af-ft a{font-family:var(--mono);font-size:10px;color:var(--c);text-decoration:none}
+/* Right skills panel */
+.ri-sec{padding:9px 12px;border-bottom:1px solid var(--br)}
+.ri-sub{font-family:var(--mono);font-size:9px;color:var(--t2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px}
+.tech-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.tech-it{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 3px;background:var(--bg3);border:1px solid var(--br);border-radius:5px;cursor:default;transition:border-color .15s}
+.tech-it:hover{border-color:var(--bc)}
+.tech-ico{font-size:16px}.tech-nm{font-family:var(--mono);font-size:7px;color:var(--mu);text-align:center}
+#gh-heat{display:flex;gap:2px;overflow:hidden}
+.gh-col{display:flex;flex-direction:column;gap:2px}
+.gh-cell{width:7px;height:7px;border-radius:1px}
+.gh-meta{font-family:var(--mono);font-size:8px;color:var(--mu);margin-top:5px;display:flex;justify-content:space-between;align-items:center}
+.gh-meta a{color:var(--c);text-decoration:none}
+/* BOT */
+.bot{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--br);border-bottom:1px solid var(--br)}
+.bp{background:var(--bg2);padding:1.2rem 1.3rem}
+.bp-hd{font-family:var(--mono);font-size:9.5px;color:var(--t2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.9rem}
+.ach-l{display:flex;flex-direction:column;gap:.5rem}
+.ach-it{display:flex;align-items:center;gap:9px}
+.ach-ico{font-size:13px;width:20px;text-align:center;flex-shrink:0}
+.ach-n{font-size:12px;color:var(--tx);font-weight:500}
+.ach-v{font-family:var(--mono);font-size:11px;color:var(--c);margin-left:auto;white-space:nowrap}
+.qp{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(59,130,246,.07))}
+.qp::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 25% 70%,rgba(139,92,246,.22) 0%,transparent 55%)}
+.qp-in{position:relative;z-index:1}
+.q-tx{font-size:1.05rem;font-weight:800;color:var(--tx);line-height:1.45;font-style:italic;margin-bottom:.5rem}
+.q-by{font-family:var(--mono);font-size:10px;color:var(--mu)}
+.cb-it{display:flex;align-items:flex-start;gap:9px;background:var(--bg3);border:1px solid var(--br);border-radius:6px;padding:.85rem;margin-bottom:.6rem}
+.cb-it:last-child{margin-bottom:0}
+.cb-ico{font-size:16px;flex-shrink:0}.cb-n{font-size:12px;font-weight:700;color:var(--c);margin-bottom:2px}
+.cb-d{font-size:11px;color:var(--t2);line-height:1.4;margin-bottom:.6rem}
+.cb-pl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--mu);margin-bottom:4px}
+.cb-tr{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.cb-fi{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--c),var(--p));width:0;transition:width 1.5s ease}
+/* FULL SECTIONS */
+.fsec{padding:2.5rem 1.8rem;border-bottom:1px solid var(--br)}
+.fsec-hd{margin-bottom:1.5rem}
+.fsec-tag{font-family:var(--mono);font-size:9px;color:var(--c);letter-spacing:3px;text-transform:uppercase;margin-bottom:.35rem}
+.fsec-ti{font-size:1.8rem;font-weight:900;color:var(--tx);letter-spacing:-1px}
+.ab-gr{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+.ab-p{font-size:13.5px;color:var(--t2);line-height:1.8;margin-bottom:.9rem}
+.ab-kpi{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.kpi{background:var(--bg2);border:1px solid var(--br);border-radius:7px;padding:1rem;text-align:center;transition:border-color .2s}
+.kpi:hover{border-color:var(--bc)}.kpi-n{font-size:1.8rem;font-weight:900;color:var(--c);letter-spacing:-1px}.kpi-l{font-size:11px;color:var(--t2)}
+.sk-gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:1rem}
+.sk-c{background:var(--bg2);border:1px solid var(--br);border-radius:7px;padding:1rem;transition:border-color .2s}
+.sk-c:hover{border-color:var(--bc)}
+.sk-ti{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:.65rem;display:flex;align-items:center;gap:7px}
+.sk-tw{display:flex;flex-wrap:wrap;gap:.3rem}
+.sk-tg{background:var(--bg3);border:1px solid var(--br);border-radius:3px;padding:3px 8px;font-family:var(--mono);font-size:9.5px;color:var(--t2)}
+.pc-gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:1rem}
+.pc{background:var(--bg2);border:1px solid var(--br);border-radius:9px;padding:1.2rem;transition:all .2s}
+.pc:hover{border-color:var(--bc);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.pc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+.pc-ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.pc-lk{font-family:var(--mono);font-size:10px;color:var(--c);text-decoration:none;letter-spacing:.5px}.pc-lk:hover{text-decoration:underline}
+.pc-n{font-size:.9rem;font-weight:800;color:var(--tx);margin-bottom:.3rem}
+.pc-d{font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:.65rem}
+.pc-tags{display:flex;flex-wrap:wrap;gap:.3rem}
+.pc-tag{background:var(--bg3);border:1px solid var(--br);border-radius:3px;padding:2px 7px;font-family:var(--mono);font-size:8.5px;color:var(--p)}
+.pc-sec-hd{font-family:var(--mono);font-size:9.5px;color:var(--c);letter-spacing:2px;text-transform:uppercase;margin:1.5rem 0 .8rem;padding-bottom:.4rem;border-bottom:1px solid var(--br)}
+.cert-gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:.75rem}
+.cert-c{background:var(--bg2);border:1px solid var(--br);border-radius:7px;padding:.82rem;display:flex;align-items:flex-start;gap:8px;transition:border-color .2s}
+.cert-c:hover{border-color:var(--bc)}
+.cert-ic{width:26px;height:26px;border-radius:5px;background:linear-gradient(135deg,var(--c),var(--p));display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px}
+.cert-n{font-size:11px;font-weight:600;color:var(--tx);line-height:1.3;margin-bottom:2px}
+.cert-by{font-family:var(--mono);font-size:8.5px;color:var(--mu)}
+.cert-dt{font-family:var(--mono);font-size:8px;color:var(--c);margin-top:1px}
+.cert-lk{font-family:var(--mono);font-size:8.5px;color:var(--c);text-decoration:none}.cert-lk:hover{text-decoration:underline}
+.cert-grp{margin-bottom:1.4rem}
+.cert-grp-hd{font-family:var(--mono);font-size:9.5px;color:var(--t2);letter-spacing:2px;text-transform:uppercase;margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--br)}
+.pub-c{background:var(--bg2);border:1px solid var(--br);border-radius:9px;padding:1.3rem;border-left:3px solid var(--c);margin-bottom:1rem}
+.pub-c:last-of-type{margin-bottom:0}
+.pub-type{font-family:var(--mono);font-size:8.5px;color:var(--c);letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem}
+.pub-ti{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:.4rem;line-height:1.4}
+.pub-jr{font-size:12px;color:var(--t2)}
+.ct-gr{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.ct-info{display:flex;flex-direction:column;gap:.65rem}
+.ct-it{display:flex;align-items:center;gap:9px;background:var(--bg2);border:1px solid var(--br);border-radius:7px;padding:.82rem}
+.ct-ic{width:30px;height:30px;border-radius:6px;background:rgba(0,229,196,.07);border:1px solid var(--bc);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ct-lb{font-family:var(--mono);font-size:8.5px;color:var(--mu);margin-bottom:2px;letter-spacing:.5px}
+.ct-vl{font-size:12px;color:var(--tx)}.ct-vl a{color:var(--c);text-decoration:none}.ct-vl a:hover{text-decoration:underline}
+.ct-cta{background:var(--bg2);border:1px solid var(--br);border-radius:9px;padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.8rem}
+.ct-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,196,.08);border:1px solid var(--bc);border-radius:6px;padding:9px 18px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--c);text-decoration:none;letter-spacing:1px;transition:all .2s}
+.ct-btn:hover{background:rgba(0,229,196,.14)}
+.etl{position:relative;padding-left:1.5rem}
+.etl::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:var(--br)}
+.etl-it{position:relative;padding-left:1.5rem;padding-bottom:2rem}
+.etl-it::before{content:'';position:absolute;left:-5px;top:6px;width:10px;height:10px;border-radius:50%;border:2px solid var(--bg2)}
+.etl-it:nth-child(1)::before{background:var(--g);box-shadow:0 0 8px var(--g)}
+.etl-it:nth-child(2)::before{background:var(--bl);box-shadow:0 0 8px var(--bl)}
+.etl-it:nth-child(3)::before{background:var(--p);box-shadow:0 0 8px var(--p)}
+.etl-r{font-size:15px;font-weight:800;color:var(--tx);margin-bottom:2px}
+.etl-co{font-size:13px;color:var(--c);margin-bottom:2px}
+.etl-dt{font-family:var(--mono);font-size:11px;color:var(--mu);margin-bottom:.7rem}
+.etl-bl{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.etl-bl li{font-size:13px;color:var(--t2);padding-left:1rem;position:relative;line-height:1.65}
+.etl-bl li::before{content:'▸';position:absolute;left:0;color:var(--c);font-size:9px;top:5px}
+.footer{background:var(--bg2);border-top:1px solid var(--br);padding:1rem 1.8rem;display:flex;align-items:center;justify-content:space-between}
+.ft{font-family:var(--mono);font-size:9.5px;color:var(--mu)}
+@media(max-width:1100px){.hero{grid-template-columns:1fr 275px}.h-pp{display:none}.mid{grid-template-columns:300px 1fr}.mid>.mp:last-child{display:none}}
+@media(max-width:800px){:root{--sw:0px}.ls{display:none}.hero{grid-template-columns:1fr}.h-rp{display:none}.mid{grid-template-columns:1fr}.bot{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.ab-gr,.ct-gr{grid-template-columns:1fr}}
+</style>
+
+<!-- SIDEBAR -->
+<aside class="ls">
+  <div class="ls-logo">
+    <div class="ls-sh">🛡</div>
+    <div><div class="ls-nm">SRIRAM <em>S</em></div><div class="ls-sub">Security Engineer</div></div>
+  </div>
+  <nav class="ls-nav">
+    <a class="ls-a active" onclick="goTo('dash')"><span class="ls-ic">⌂</span>DASHBOARD</a>
+    <a class="ls-a" onclick="goTo('about-sec')"><span class="ls-ic">◉</span>ABOUT</a>
+    <a class="ls-a" onclick="goTo('exp-sec')"><span class="ls-ic">⊕</span>EXPERIENCE</a>
+    <a class="ls-a" onclick="goTo('proj-sec')"><span class="ls-ic">◈</span>PROJECTS</a>
+    <a class="ls-a" onclick="goTo('sk-sec')"><span class="ls-ic">⚡</span>SKILLS</a>
+    <a class="ls-a" onclick="goTo('cert-sec')"><span class="ls-ic">✦</span>CERTIFICATIONS</a>
+    <a class="ls-a" onclick="goTo('pub-sec')"><span class="ls-ic">◎</span>PUBLICATIONS</a>
+    <a class="ls-a" onclick="goTo('ach-sec')"><span class="ls-ic">🏆</span>ACHIEVEMENTS</a>
+    <a class="ls-a" onclick="goTo('ct-sec')"><span class="ls-ic">✉</span>CONTACT</a>
+    <a class="ls-a" href="https://drive.google.com/drive/folders/1IMk1LXuA6neijjAUMRqVjvsQJVrIK2Bn" target="_blank"><span class="ls-ic">⬇</span>RESUME</a>
+  </nav>
+  <div class="ls-bot">
+    <div class="ls-sl" style="color:var(--c);letter-spacing:1px;margin-bottom:4px">LET'S CONNECT</div>
+    <div class="ls-socs" style="gap:7px;margin-bottom:9px">
+      <a class="ls-soc" href="https://linkedin.com/in/sriram-s-815842291" target="_blank" style="display:flex;align-items:center;justify-content:center;width:30px;height:26px;background:rgba(10,102,194,.25);border:1px solid rgba(10,102,194,.5);border-radius:5px;font-size:11px">in</a>
+      <a class="ls-soc" href="https://github.com/Sriram004" target="_blank" style="display:flex;align-items:center;justify-content:center;width:30px;height:26px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:5px;font-size:11px">⌥</a>
+      <a class="ls-soc" href="mailto:sriram.ks11a@gmail.com" style="display:flex;align-items:center;justify-content:center;width:30px;height:26px;background:rgba(0,229,196,.1);border:1px solid var(--bc);border-radius:5px;font-size:11px">@</a>
+    </div>
+    <div class="ls-sl">SYSTEM STATUS</div>
+    <div class="ls-ok"><span class="ls-gd"></span>All Systems Operational</div>
+    <svg viewBox="0 0 155 20" fill="none" style="width:100%;height:18px;margin-bottom:8px"><polyline points="0,10 16,10 26,3 36,18 46,7 56,14 66,10 84,10 94,5 104,17 114,10 155,10" stroke="#10B981" stroke-width="1.5" opacity=".7"/></svg>
+    <div class="ls-socs">
+      <a class="ls-soc" href="https://github.com/Sriram004" target="_blank" title="GitHub">⌥</a>
+      <a class="ls-soc" href="https://linkedin.com/in/sriram-s-815842291" target="_blank" title="LinkedIn">in</a>
+      <a class="ls-soc" href="mailto:sriram.ks11a@gmail.com" title="Email">@</a>
+    </div>
+    <div class="ls-arrs"><div class="ls-arr">←</div><div class="ls-arr">→</div></div>
+  </div>
+</aside>
+
+<main class="main">
+
+<!-- TOP STRIP -->
+<div class="ts">
+  <div class="ts-l" style="color:var(--g);font-weight:700;letter-spacing:1px">// SYSTEM ONLINE</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--c);letter-spacing:2.5px;text-transform:uppercase;font-weight:600">WELCOME TO MY DIGITAL FORTRESS</div>
+  <div class="ts-r">
+    <div class="ts-chip"><span class="ts-gd"></span>ONLINE</div>
+    <div class="ts-chip">📍 INDIA 🇮🇳</div>
+    <div class="ts-chip" id="live-time">--:--:-- IST</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="dash">
+  <!-- Photo Panel -->
+  <div class="h-pp">
+    <div class="h-pg"></div>
+    <div class="ph-w">
+      <div class="ph-gl"></div>
+      <div class="ph-r1"></div><div class="ph-r2"></div><div class="ph-r3"></div>
+      <div class="ph-fr">
+        <img class="ph-img" id="ph-img" src="photo.jpg" alt="Sriram S" style="object-fit:cover;object-position:center top;width:100%;height:100%" onerror="this.style.display='none';document.getElementById('ph-fb').style.display='flex'">
+        <div class="ph-fb" id="ph-fb" style="display:none">SS</div>
+        <div class="ph-sc"></div>
+      </div>
+      <div class="ph-orb"><div class="ph-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- Text Panel -->
+  <div class="h-tp">
+    <div class="h-hello">HELLO, I'M</div>
+    <h1 class="h-name">SRIRAM <em>S</em></h1>
+    <div class="h-roles">
+      <span class="h-rt">SECURITY ENGINEER</span>
+      <span class="h-rt">SOC ANALYST</span>
+      <span class="h-rt">DETECTION ENGINEER</span>
+    </div>
+    <p class="h-desc">I build, break, and defend systems. Passionate about threat hunting, detection engineering, and building security solutions that make an impact. Published researcher with hands-on enterprise SOC experience.</p>
+    <div class="h-cts">
+      <a class="h-ct" href="tel:+919080356859">📞 +91-9080356859</a>
+      <a class="h-ct" href="mailto:sriram.ks11a@gmail.com">✉ sriram.ks11a@gmail.com</a>
+    </div>
+    <div style="display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center">
+      <a href="https://linkedin.com/in/sriram-s-815842291" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#0A66C2;border-radius:7px;padding:9px 18px;font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:.5px;transition:opacity .2s" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/Sriram004" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:7px;padding:9px 18px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--tx);text-decoration:none;letter-spacing:.5px;transition:opacity .2s" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        GitHub
+      </a>
+    </div>
+    <a class="h-dl" href="https://drive.google.com/drive/folders/1IMk1LXuA6neijjAUMRqVjvsQJVrIK2Bn" target="_blank">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      DOWNLOAD CV
+    </a>
+  </div>
+
+  <!-- Right Widgets Panel -->
+  <div class="h-rp">
+    <!-- Threat Intel Feed -->
+    <div class="rp-hd" style="color:var(--o)">
+      <span>🔍 THREAT INTELLIGENCE FEED</span>
+    </div>
+    <div class="tif">
+      <div class="tif-bd">
+        <div class="tif-it">
+          <div class="tif-ic">NEW IOCs</div>
+          <div class="tif-val" id="ioc-count">3</div>
+          <div class="tif-lbl">Detected</div>
+        </div>
+        <div class="tif-it">
+          <div class="tif-ic">THREAT LEVEL</div>
+          <div class="tif-val" style="color:var(--o);font-size:1rem">MEDIUM</div>
+          <div class="tif-lbl">Global Status</div>
+        </div>
+        <div class="tif-it">
+          <div class="tif-ic">MITRE TTPs</div>
+          <div class="tif-val" id="ttp-count">12</div>
+          <div class="tif-lbl">Observed</div>
+        </div>
+        <div class="tif-it">
+          <div class="tif-ic">MONITORED</div>
+          <div class="tif-val">98</div>
+          <div class="tif-lbl">Systems</div>
+        </div>
+      </div>
+      <div class="tif-ft"><a onclick="goTo('proj-sec')">View Feed →</a></div>
+    </div>
+
+    <!-- Live Attack Map -->
+    <div class="lam">
+      <div class="rp-hd">
+        <span>🌐 LIVE ATTACK MAP</span>
+        <div class="rp-live" style="color:var(--g)"><div class="rp-ld" style="background:var(--g);box-shadow:0 0 4px var(--g)"></div>LIVE</div>
+      </div>
+      <div style="padding:8px;flex:1">
+        <svg viewBox="0 0 260 130" style="width:100%;height:100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="rgba(6,8,20,.5)"/>
+          <!-- Continents simplified -->
+          <path d="M18,28 Q28,22 40,24 Q52,20 56,30 Q60,38 55,48 Q50,56 38,60 Q28,62 20,54 Q12,46 15,36Z" fill="rgba(0,229,196,.07)" stroke="rgba(0,229,196,.2)" stroke-width=".5"/>
+          <path d="M34,66 Q43,61 50,68 Q56,76 53,90 Q48,100 38,102 Q30,100 28,89 Q26,78 30,70Z" fill="rgba(0,229,196,.07)" stroke="rgba(0,229,196,.2)" stroke-width=".5"/>
+          <path d="M90,22 Q100,17 112,22 Q120,26 116,35 Q112,42 102,40 Q92,35 90,28Z" fill="rgba(0,229,196,.07)" stroke="rgba(0,229,196,.2)" stroke-width=".5"/>
+          <path d="M92,46 Q104,40 112,48 Q121,58 118,75 Q112,85 102,85 Q91,82 88,70 Q85,58 89,49Z" fill="rgba(0,229,196,.07)" stroke="rgba(0,229,196,.2)" stroke-width=".5"/>
+          <path d="M118,18 Q140,12 162,17 Q182,20 192,30 Q196,42 185,48 Q168,54 148,52 Q128,48 118,40 Q110,30 118,20Z" fill="rgba(0,229,196,.07)" stroke="rgba(0,229,196,.2)" stroke-width=".5"/>
+          <!-- India highlighted -->
+          <path d="M151,50 Q159,53 162,64 Q160,76 151,79 Q142,76 140,66 Q139,55 146,51Z" fill="rgba(0,229,196,.14)" stroke="rgba(0,229,196,.4)" stroke-width=".8"/>
+          <path d="M165,74 Q181,70 192,78 Q200,86 194,97 Q183,103 168,100 Q158,93 159,82Z" fill="rgba(0,229,196,.07)" stroke="rgba(0,229,196,.2)" stroke-width=".5"/>
+          <line x1="0" y1="65" x2="260" y2="65" stroke="rgba(0,229,196,.05)" stroke-width=".5"/>
+          <line x1="130" y1="0" x2="130" y2="130" stroke="rgba(0,229,196,.05)" stroke-width=".5"/>
+          <!-- Threat dots -->
+          <circle cx="37" cy="39" r="2.5" fill="var(--c)" opacity=".9"/>
+          <circle cx="37" cy="39" r="2.5" fill="none" stroke="var(--c)" stroke-width="1"><animate attributeName="r" from="2.5" to="11" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" from=".7" to="0" dur="2s" repeatCount="indefinite"/></circle>
+          <circle cx="154" cy="63" r="3" fill="var(--g)" opacity="1"/>
+          <circle cx="154" cy="63" r="3" fill="none" stroke="var(--g)" stroke-width="1"><animate attributeName="r" from="3" to="13" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" from=".8" to="0" dur="1.8s" repeatCount="indefinite"/></circle>
+          <circle cx="102" cy="30" r="2" fill="var(--p)" opacity=".8"/>
+          <circle cx="102" cy="30" r="2" fill="none" stroke="var(--p)" stroke-width="1"><animate attributeName="r" from="2" to="9" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" from=".6" to="0" dur="2.5s" repeatCount="indefinite"/></circle>
+          <circle cx="168" cy="32" r="2" fill="var(--o)" opacity=".8"/>
+          <circle cx="168" cy="32" r="2" fill="none" stroke="var(--o)" stroke-width="1"><animate attributeName="r" from="2" to="9" dur="3s" repeatCount="indefinite" begin=".5s"/><animate attributeName="opacity" from=".6" to="0" dur="3s" repeatCount="indefinite" begin=".5s"/></circle>
+          <!-- Connection lines -->
+          <line x1="37" y1="39" x2="154" y2="63" stroke="var(--c)" stroke-width=".5" stroke-dasharray="3,3" opacity=".2"><animate attributeName="stroke-dashoffset" from="0" to="-20" dur="1s" repeatCount="indefinite"/></line>
+          <line x1="102" y1="30" x2="154" y2="63" stroke="var(--p)" stroke-width=".5" stroke-dasharray="3,3" opacity=".18"><animate attributeName="stroke-dashoffset" from="0" to="-20" dur="1.5s" repeatCount="indefinite"/></line>
+          <line x1="168" y1="32" x2="154" y2="63" stroke="var(--o)" stroke-width=".5" stroke-dasharray="3,3" opacity=".18"><animate attributeName="stroke-dashoffset" from="0" to="-20" dur="1.2s" repeatCount="indefinite"/></line>
+          <text x="130" y="126" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(71,85,105,.9)">24x7 Monitoring · Global Coverage</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats">
+  <div class="si"><span style="font-size:20px">🛡</span><div><div class="si-n" data-target="15">0+</div><div class="si-l">Projects Completed</div></div></div>
+  <div class="si"><span style="font-size:20px">⚡</span><div><div class="si-n" data-target="10">0+</div><div class="si-l">Security Tools</div></div></div>
+  <div class="si"><span style="font-size:20px">◈</span><div><div class="si-n" data-target="5" data-suf="K+">0</div><div class="si-l">Lines of Code</div></div></div>
+  <div class="si"><span style="font-size:20px">📄</span><div><div class="si-n" data-target="2">0+</div><div class="si-l">Publications</div></div></div>
+  <div class="si"><span style="font-size:20px">🧠</span><div><div class="si-n">24/7</div><div class="si-l">Builder Mindset</div></div></div>
+</div>
+
+<!-- MID GRID -->
+<div class="mid">
+
+  <!-- Col 1: Experience Timeline -->
+  <div class="mp">
+    <div class="mp-hd"><span>⊕ EXPERIENCE TIMELINE</span></div>
+    <div class="et">
+      <div class="et-it">
+        <div class="et-r">SOC Analyst Intern</div>
+        <div class="et-co">Saksoft</div>
+        <div class="et-dt"><span>Oct 2025 – Apr 2026</span></div>
+        <div class="et-ds">Monitored 150+ daily alerts, reduced MTTD by 30% with Sigma tuning and structured triage. IOC correlation & MITRE ATT&CK mapping.</div>
+      </div>
+      <div class="et-it">
+        <div class="et-r">Cybersecurity Intern</div>
+        <div class="et-co">PYZAQL</div>
+        <div class="et-dt"><span>Jan 2024 – Mar 2024</span></div>
+        <div class="et-ds">Vulnerability assessment, log analysis, Wireshark & Nessus scans. Identified 8 critical control gaps, closed them 40% faster.</div>
+      </div>
+      <div class="et-it">
+        <div class="et-r">Full Stack Developer Intern</div>
+        <div class="et-co">COGTIS Technologies</div>
+        <div class="et-dt"><span>May 2023 – Aug 2023</span></div>
+        <div class="et-ds">Built REST APIs, containerised services with Docker. Cut deployment time from hours to under 20 minutes.</div>
+      </div>
+    </div>
+    <div class="mp-ft"><a onclick="goTo('exp-sec')">VIEW FULL EXPERIENCE →</a></div>
+  </div>
+
+  <!-- Col 2: Projects + Activity Feed -->
+  <div class="mp">
+    <div class="mp-hd"><span>◈ FEATURED PROJECTS</span><a onclick="goTo('proj-sec')">VIEW ALL →</a></div>
+    <div class="fp">
+      <div class="fp-it" onclick="window.open('https://github.com/Sriram004/Detectra-nextgen-xdr','_blank')">
+        <div class="fp-lt">
+          <div class="fp-top"><div class="fp-ic" style="background:rgba(0,229,196,.1)">🛡</div><span class="fp-n">Detectra NextGen XDR</span><span class="fp-badge">FEATURED</span></div>
+          <div class="fp-d">Modular XDR platform with Sigma rules, UEBA, SOAR automation and OT/ICS threat detection.</div>
+          <div class="fp-tags"><span class="fp-tag">Python</span><span class="fp-tag">FastAPI</span><span class="fp-tag">PostgreSQL</span><span class="fp-tag">OpenSearch</span></div>
+        </div>
+        <div class="fp-pv"><svg viewBox="0 0 70 45" fill="none"><polyline points="2,38 12,28 22,32 32,15 42,18 52,8 62,12 68,5" stroke="#00E5C4" stroke-width="1.5"/><path d="M2,38 12,28 22,32 32,15 42,18 52,8 62,12 68,5 68,45 2,45Z" fill="rgba(0,229,196,.08)"/></svg></div>
+      </div>
+      <div class="fp-it" onclick="window.open('https://github.com/Sriram004/secunova-soc-platform','_blank')">
+        <div class="fp-lt">
+          <div class="fp-top"><div class="fp-ic" style="background:rgba(139,92,246,.1)">⊕</div><span class="fp-n">SecuNova — SOC Platform</span></div>
+          <div class="fp-d">Enterprise SOC platform with real-time alert triage, RBAC & analytics dashboards.</div>
+          <div class="fp-tags"><span class="fp-tag">React</span><span class="fp-tag">TypeScript</span><span class="fp-tag">PostgreSQL</span><span class="fp-tag">RLS</span></div>
+        </div>
+        <div class="fp-pv"><svg viewBox="0 0 70 45" fill="none"><rect x="3" y="15" width="11" height="30" fill="rgba(139,92,246,.6)" rx="1"/><rect x="19" y="8" width="11" height="37" fill="rgba(139,92,246,.7)" rx="1"/><rect x="35" y="20" width="11" height="25" fill="rgba(139,92,246,.5)" rx="1"/><rect x="51" y="3" width="11" height="42" fill="rgba(139,92,246,.8)" rx="1"/></svg></div>
+      </div>
+      <div class="fp-it" onclick="goTo('pub-sec')">
+        <div class="fp-lt">
+          <div class="fp-top"><div class="fp-ic" style="background:rgba(245,158,11,.1)">⚗</div><span class="fp-n">Malware Detection System</span></div>
+          <div class="fp-d">ML pipeline for malware classification with 5K+ samples and high accuracy models.</div>
+          <div class="fp-tags"><span class="fp-tag">Python</span><span class="fp-tag">Scikit-learn</span><span class="fp-tag">Pandas</span><span class="fp-tag">Matplotlib</span></div>
+        </div>
+        <div class="fp-pv"><svg viewBox="0 0 70 45" fill="none"><circle cx="10" cy="36" r="2.5" fill="#EF4444" opacity=".75"/><circle cx="18" cy="30" r="2.5" fill="#EF4444" opacity=".75"/><circle cx="14" cy="40" r="2.5" fill="#EF4444" opacity=".75"/><circle cx="38" cy="10" r="2.5" fill="#10B981" opacity=".75"/><circle cx="48" cy="8" r="2.5" fill="#10B981" opacity=".75"/><circle cx="56" cy="12" r="2.5" fill="#10B981" opacity=".75"/><circle cx="62" cy="6" r="2.5" fill="#10B981" opacity=".75"/><line x1="5" y1="22" x2="65" y2="22" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="2,2"/></svg></div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="af">
+      <div class="af-hd"><span>ACTIVITY FEED</span><div class="af-rt"><div class="af-rld"></div>REAL-TIME</div></div>
+      <div class="af-list" id="af-list">
+        <div class="af-it"><div class="af-ico">🔴</div><div class="af-b"><div class="af-ev">Sigma rule triggered</div><div class="af-sub">Possible PowerShell Empire activity</div><div class="af-tm">2m ago</div></div></div>
+        <div class="af-it"><div class="af-ico">🟡</div><div class="af-b"><div class="af-ev">New IOC added</div><div class="af-sub">malicious-ip-193.199.109.153</div><div class="af-tm">8m ago</div></div></div>
+        <div class="af-it"><div class="af-ico">🟠</div><div class="af-b"><div class="af-ev">Alert triaged</div><div class="af-sub">Severity: High · Host: WIN-DC-01</div><div class="af-tm">15m ago</div></div></div>
+        <div class="af-it"><div class="af-ico">🟢</div><div class="af-b"><div class="af-ev">Playbook executed</div><div class="af-sub">Containment workflow triggered</div><div class="af-tm">22m ago</div></div></div>
+        <div class="af-it"><div class="af-ico">🔵</div><div class="af-b"><div class="af-ev">Threat hunt completed</div><div class="af-sub">No threats found in environment</div><div class="af-tm">45m ago</div></div></div>
+      </div>
+      <div class="af-ft"><a onclick="goTo('exp-sec')">VIEW FULL LOGS →</a></div>
+    </div>
+  </div>
+
+  <!-- Col 3: Skills + Tech + GitHub -->
+  <div class="mp">
+    <div class="mp-hd"><span>⚡ TOP SKILLS</span></div>
+    <div class="ri-sec">
+      <canvas id="radarCanvas" style="width:100%;height:155px;display:block"></canvas>
+    </div>
+    <div class="ri-sec">
+      <div class="ri-sub">TECH STACK</div>
+      <div class="tech-grid">
+        <div class="tech-it"><div class="tech-ico">🐍</div><div class="tech-nm">Python</div></div>
+        <div class="tech-it"><div class="tech-ico">⚡</div><div class="tech-nm">FastAPI</div></div>
+        <div class="tech-it"><div class="tech-ico">⚛</div><div class="tech-nm">React</div></div>
+        <div class="tech-it"><div class="tech-ico">📘</div><div class="tech-nm">TypeScript</div></div>
+        <div class="tech-it"><div class="tech-ico">🐘</div><div class="tech-nm">PostgreSQL</div></div>
+        <div class="tech-it"><div class="tech-ico">🐳</div><div class="tech-nm">Docker</div></div>
+        <div class="tech-it"><div class="tech-ico">🐧</div><div class="tech-nm">Linux</div></div>
+        <div class="tech-it"><div class="tech-ico">☁</div><div class="tech-nm">AWS</div></div>
+        <div class="tech-it"><div class="tech-ico">🔀</div><div class="tech-nm">Git</div></div>
+        <div class="tech-it"><div class="tech-ico">💲</div><div class="tech-nm">Bash</div></div>
+      </div>
+    </div>
+    <div class="ri-sec" style="border-bottom:none">
+      <div class="ri-sub">GITHUB ACTIVITY</div>
+      <div id="gh-heat"></div>
+      <div class="gh-meta"><span>1,248+ Contributions in the last year</span><a href="https://github.com/Sriram004" target="_blank">View Profile →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM ROW -->
+<div class="bot" id="ach-sec">
+  <!-- Achievements -->
+  <div class="bp">
+    <div class="bp-hd">🏆 ACHIEVEMENTS</div>
+    <div class="ach-l">
+      <div class="ach-it"><div class="ach-ico">📄</div><div class="ach-n">Published Researcher</div><div class="ach-v">IJCA 2025</div></div>
+      <div class="ach-it"><div class="ach-ico">📘</div><div class="ach-n">Scopus Accepted Paper</div><div class="ach-v">ICRETM 2026</div></div>
+      <div class="ach-it"><div class="ach-ico">🛡</div><div class="ach-n">SOC Impact</div><div class="ach-v">MTTD −30%</div></div>
+      <div class="ach-it"><div class="ach-ico">⭐</div><div class="ach-n">CGPA</div><div class="ach-v">9.55 / 10</div></div>
+      <div class="ach-it"><div class="ach-ico">🔨</div><div class="ach-n">Builder</div><div class="ach-v">22+ Projects</div></div>
+      <div class="ach-it"><div class="ach-ico">✦</div><div class="ach-n">Certifications Earned</div><div class="ach-v">30+</div></div>
+    </div>
+  </div>
+
+  <!-- Quote -->
+  <div class="bp qp">
+    <div class="qp-in">
+      <div class="q-tx">"The best defense is a relentless offense."</div>
+      <div class="q-by">— Unknown</div>
+      <div style="margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap">
+        <span style="font-family:var(--mono);font-size:9.5px;color:var(--t2);background:var(--bg3);border:1px solid var(--br);border-radius:4px;padding:3px 9px">⚔ MITRE ATT&CK Enthusiast</span>
+        <span style="font-family:var(--mono);font-size:9.5px;color:var(--t2);background:var(--bg3);border:1px solid var(--br);border-radius:4px;padding:3px 9px">🔍 24/7 Learner</span>
+        <span style="font-family:var(--mono);font-size:9.5px;color:var(--t2);background:var(--bg3);border:1px solid var(--br);border-radius:4px;padding:3px 9px">🎯 Impact Driven</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Currently Building -->
+  <div class="bp">
+    <div class="bp-hd">🔨 CURRENTLY BUILDING</div>
+    <div class="cb-it">
+      <div class="cb-ico">🛡</div>
+      <div style="flex:1">
+        <div class="cb-n">NextGen SIEM Correlation Engine</div>
+        <div class="cb-d">Rewriting detection. Automating response. Building the future of SOC.</div>
+        <div class="cb-pl"><span>72% COMPLETE</span><span>72%</span></div>
+        <div class="cb-tr"><div class="cb-fi" data-w="72%"></div></div>
+      </div>
+    </div>
+    <div class="cb-it">
+      <div class="cb-ico">☁</div>
+      <div style="flex:1">
+        <div class="cb-n">VendorGuard TPRM Platform</div>
+        <div class="cb-d">Third-party risk management automation tool.</div>
+        <div class="cb-pl"><span>45% COMPLETE</span><span>45%</span></div>
+        <div class="cb-tr"><div class="cb-fi" data-w="45%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="fsec" id="about-sec">
+  <div class="fsec-hd"><div class="fsec-tag">// 01 — ABOUT ME</div><h2 class="fsec-ti">Who I Am</h2></div>
+  <div class="ab-gr">
+    <div>
+      <p class="ab-p">I'm <strong style="color:var(--c)">Sriram S</strong>, a final-year B.Tech Computer Science (Cyber Security) student at SRM Institute of Science and Technology, Ramapuram, graduating in 2026 with a <strong>9.55 CGPA</strong>.</p>
+      <p class="ab-p">I specialize in SOC operations, detection engineering, and building production-grade security platforms. My experience spans XDR-based alert triage, Sigma-rule logic refinement, SIEM/SOAR workflows, OT/ICS security, and full-stack security tooling with tools like Microsoft Sentinel, Cortex XDR, Splunk, Nessus, and Wireshark.</p>
+      <p class="ab-p">Beyond the SOC, I'm a published researcher — with work on ML-based malware detection in the International Journal of Computer Applications, and a Federated Explainable AI framework accepted at ICRETM 2026 (Scopus-indexed). I maintain 22+ GitHub projects spanning security, ML, full-stack, and systems categories.</p>
+      <p class="ab-p">Actively seeking <strong style="color:var(--c)">SOC Analyst</strong>, <strong style="color:var(--c)">Detection Engineer</strong>, and <strong style="color:var(--c)">Security Engineer</strong> roles in Bangalore.</p>
+    </div>
+    <div class="ab-kpi">
+      <div class="kpi"><div class="kpi-n">9.55</div><div class="kpi-l">CGPA / 10</div></div>
+      <div class="kpi"><div class="kpi-n">22+</div><div class="kpi-l">GitHub Projects</div></div>
+      <div class="kpi"><div class="kpi-n">2</div><div class="kpi-l">Publications</div></div>
+      <div class="kpi"><div class="kpi-n">3</div><div class="kpi-l">Internships</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE ═══ -->
+<section class="fsec" id="exp-sec">
+  <div class="fsec-hd"><div class="fsec-tag">// 02 — EXPERIENCE</div><h2 class="fsec-ti">Where I've Worked</h2></div>
+  <div class="etl">
+    <div class="etl-it">
+      <div class="etl-r">SOC Analyst Intern</div><div class="etl-co">Saksoft</div><div class="etl-dt">October 2025 – April 2026</div>
+      <ul class="etl-bl">
+        <li>Monitored and triaged 150+ endpoint security alerts daily across SIEM (Microsoft Sentinel, Cortex XDR) and MDR queues, classifying by severity and asset criticality; reduced MTTD by ~30% through refined Sigma-rule logic and structured anomaly documentation.</li>
+        <li>Investigated suspicious activity across endpoint, network, and identity log sources; enriched alerts with IOC context and MITRE ATT&CK TTP mapping, updating ServiceNow tickets — cutting average investigation time by 25%.</li>
+        <li>Identified recurring false-positive patterns across 5+ alert categories, coordinating with SMEs to tune detection rules and produce runbooks — improving alert quality and sustaining 24×7 SOC continuity.</li>
+      </ul>
+    </div>
+    <div class="etl-it">
+      <div class="etl-r">Cybersecurity Intern</div><div class="etl-co">PYZAQL</div><div class="etl-dt">January 2024 – March 2024</div>
+      <ul class="etl-bl">
+        <li>Performed structured log analysis, Wireshark-based traffic inspection, and Nessus vulnerability scans across 10+ configurations, identifying 8 critical control gaps and producing ITGC-aligned compliance documentation.</li>
+        <li>Executed access entitlement reviews and Metasploit-assisted exploitation validation, enabling the team to close configuration gaps 40% faster.</li>
+        <li>Documented remediation steps for identified vulnerabilities, reducing recurring audit findings.</li>
+      </ul>
+    </div>
+    <div class="etl-it">
+      <div class="etl-r">Full Stack Developer Intern</div><div class="etl-co">COGTIS Technologies</div><div class="etl-dt">May 2023 – August 2023</div>
+      <ul class="etl-bl">
+        <li>Designed and deployed 12+ REST API endpoints using Node.js and FastAPI, reducing manual data processing time by 35%.</li>
+        <li>Containerised 3 services using Docker, cutting deployment time from hours to under 20 minutes.</li>
+        <li>Documented API specs and business logic, reducing developer onboarding time and ensuring reliable system handoff.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS ═══ -->
+<section class="fsec" id="proj-sec">
+  <div class="fsec-hd"><div class="fsec-tag">// 03 — PROJECTS</div><h2 class="fsec-ti">What I've Built</h2></div>
+  <div class="pc-sec-hd">🛡 Security & SOC</div>
+  <div class="pc-gr">
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(0,229,196,.1)">🛡</div><a class="pc-lk" href="https://github.com/Sriram004/Detectra-nextgen-xdr" target="_blank">GitHub ↗</a></div><div class="pc-n">Detectra NextGen XDR</div><div class="pc-d">Modular XDR platform with Sigma-rule detection, alert correlation, UEBA anomaly scoring, and SOAR playbook automation — including OT/ICS adversary behaviour detection.</div><div class="pc-tags"><span class="pc-tag">FastAPI</span><span class="pc-tag">Sigma Rules</span><span class="pc-tag">UEBA</span><span class="pc-tag">SOAR</span><span class="pc-tag">OT/ICS</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(139,92,246,.1)">⊕</div><a class="pc-lk" href="https://github.com/Sriram004/secunova-soc-platform" target="_blank">GitHub ↗</a></div><div class="pc-n">SecuNova — Enterprise SOC Platform</div><div class="pc-d">Production-ready SOC platform with React, TypeScript, PostgreSQL RLS, real-time alert triage, RBAC (4 tiers), and MTTD/MTTR analytics dashboards.</div><div class="pc-tags"><span class="pc-tag">React</span><span class="pc-tag">TypeScript</span><span class="pc-tag">PostgreSQL</span><span class="pc-tag">RBAC</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(96,165,250,.1)">☁</div><a class="pc-lk" href="https://github.com/Sriram004/CloudSentinel-AI" target="_blank">GitHub ↗</a></div><div class="pc-n">CloudSentinel AI</div><div class="pc-d">Multi-cloud CSPM platform providing AI-driven misconfiguration detection, compliance scoring, and IAM attack path analysis across AWS, Azure, and GCP.</div><div class="pc-tags"><span class="pc-tag">CSPM</span><span class="pc-tag">Multi-Cloud</span><span class="pc-tag">AI</span><span class="pc-tag">AWS</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(96,165,250,.1)">📊</div><a class="pc-lk" href="https://github.com/Sriram004/LogVista-Cloud-Based-Log-Analytics-Monitoring-Platform" target="_blank">GitHub ↗</a></div><div class="pc-n">LogVista — Cloud Log Analytics</div><div class="pc-d">Cloud-based log analytics and monitoring platform for centralized log aggregation, search, and real-time alerting across distributed infrastructure.</div><div class="pc-tags"><span class="pc-tag">Log Analytics</span><span class="pc-tag">Cloud</span><span class="pc-tag">Monitoring</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(239,68,68,.1)">🌩</div><a class="pc-lk" href="https://github.com/Sriram004/StormSense-DDoS-Early-Prediction-System" target="_blank">GitHub ↗</a></div><div class="pc-n">StormSense — DDoS Prediction</div><div class="pc-d">AI-powered DDoS early prediction system using ML models to detect anomalous traffic patterns and predict attack onset before impact.</div><div class="pc-tags"><span class="pc-tag">ML</span><span class="pc-tag">DDoS</span><span class="pc-tag">Network</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(139,92,246,.1)">🤖</div><a class="pc-lk" href="https://github.com/Sriram004/GuardianAI-an-AI-Powered-Vulnerability-Assessment-System" target="_blank">GitHub ↗</a></div><div class="pc-n">GuardianAI — Vulnerability Assessment</div><div class="pc-d">AI-powered vulnerability assessment system that automates scanning, risk scoring, and remediation recommendations.</div><div class="pc-tags"><span class="pc-tag">AI</span><span class="pc-tag">Vuln Assessment</span><span class="pc-tag">Python</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(245,158,11,.1)">⚗</div><a class="pc-lk" href="https://github.com/Sriram004/Malware-Detection-Using-Machine-Learning" target="_blank">GitHub ↗</a></div><div class="pc-n">Malware Detection System</div><div class="pc-d">End-to-end ML pipeline (Scikit-learn) for malware classification across 5,000+ samples. Published in IJCA 2025.</div><div class="pc-tags"><span class="pc-tag">Python</span><span class="pc-tag">Scikit-learn</span><span class="pc-tag">Published</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(0,229,196,.1)">🔍</div><a class="pc-lk" href="https://github.com/Sriram004/AI-detection-Engineer-Platform" target="_blank">GitHub ↗</a></div><div class="pc-n">AI Detection Engineer Platform</div><div class="pc-d">Intelligent platform for automated detection rule generation, testing, and management powered by AI.</div><div class="pc-tags"><span class="pc-tag">AI</span><span class="pc-tag">Detection Eng</span><span class="pc-tag">Rules</span></div></div>
+  </div>
+  <div class="pc-sec-hd">💻 Full Stack & Web</div>
+  <div class="pc-gr">
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(96,165,250,.1)">📺</div><a class="pc-lk" href="https://github.com/Sriram004/SmartStream-OTT-Platform" target="_blank">GitHub ↗</a></div><div class="pc-n">SmartStream OTT Platform</div><div class="pc-d">Full-featured OTT streaming platform with user authentication, content management, and adaptive streaming.</div><div class="pc-tags"><span class="pc-tag">React</span><span class="pc-tag">Node.js</span><span class="pc-tag">PostgreSQL</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(245,158,11,.1)">📈</div><a class="pc-lk" href="https://github.com/Sriram004/DataVista-Plug-and-Play-Data-Visualization-SaaS" target="_blank">GitHub ↗</a></div><div class="pc-n">DataVista — Data Viz SaaS</div><div class="pc-d">Plug-and-play data visualization SaaS with drag-and-drop dashboards, multiple chart types, and real-time data connectors.</div><div class="pc-tags"><span class="pc-tag">React</span><span class="pc-tag">D3.js</span><span class="pc-tag">SaaS</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(16,185,129,.1)">🏢</div><a class="pc-lk" href="https://github.com/Sriram004/xeno-crm-platform" target="_blank">GitHub ↗</a></div><div class="pc-n">Xeno CRM Platform</div><div class="pc-d">Full-featured CRM platform with customer segmentation, campaign management, and analytics dashboards.</div><div class="pc-tags"><span class="pc-tag">React</span><span class="pc-tag">FastAPI</span><span class="pc-tag">PostgreSQL</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(139,92,246,.1)">🤝</div><a class="pc-lk" href="https://github.com/Sriram004/HR-Workflow-Designer-Prototype" target="_blank">GitHub ↗</a></div><div class="pc-n">HR Workflow Designer</div><div class="pc-d">Visual HR workflow automation tool with drag-and-drop process builder and approval chain management.</div><div class="pc-tags"><span class="pc-tag">React</span><span class="pc-tag">Node.js</span><span class="pc-tag">Workflow</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(0,229,196,.1)">🎤</div><a class="pc-lk" href="https://github.com/Sriram004/AI-Interviewer-Coach" target="_blank">GitHub ↗</a></div><div class="pc-n">AI Interviewer Coach</div><div class="pc-d">AI-powered interview preparation platform with real-time feedback, question bank, and performance analytics.</div><div class="pc-tags"><span class="pc-tag">AI</span><span class="pc-tag">React</span><span class="pc-tag">NLP</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(239,68,68,.1)">🔐</div><a class="pc-lk" href="https://github.com/Sriram004/Otp-verification-project-" target="_blank">GitHub ↗</a></div><div class="pc-n">OTP Verification System</div><div class="pc-d">Secure multi-factor OTP verification system with TOTP, SMS, and email delivery integrations.</div><div class="pc-tags"><span class="pc-tag">Python</span><span class="pc-tag">FastAPI</span><span class="pc-tag">Security</span></div></div>
+  </div>
+  <div class="pc-sec-hd">⚙ Systems & Low-level</div>
+  <div class="pc-gr">
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(239,68,68,.1)">🖥</div><a class="pc-lk" href="https://github.com/Sriram004/USB-IP-Communication-Using-Qemu" target="_blank">GitHub ↗</a></div><div class="pc-n">USB-IP Communication via QEMU</div><div class="pc-d">USB-over-IP communication implementation using QEMU for remote USB device virtualization and protocol research.</div><div class="pc-tags"><span class="pc-tag">C</span><span class="pc-tag">QEMU</span><span class="pc-tag">Networking</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(96,165,250,.1)">📡</div><a class="pc-lk" href="https://github.com/Sriram004/Remote-USB-IP-Device-Manager" target="_blank">GitHub ↗</a></div><div class="pc-n">Remote USB-IP Device Manager</div><div class="pc-d">Remote USB device management tool with IP-based connectivity, device enumeration, and access control.</div><div class="pc-tags"><span class="pc-tag">C</span><span class="pc-tag">Networking</span><span class="pc-tag">Linux</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(245,158,11,.1)">🧠</div><a class="pc-lk" href="https://github.com/Sriram004/Memory-Profiling-Tool" target="_blank">GitHub ↗</a></div><div class="pc-n">Memory Profiling Tool</div><div class="pc-d">System-level memory profiling and analysis tool for detecting leaks, fragmentation, and usage patterns.</div><div class="pc-tags"><span class="pc-tag">C</span><span class="pc-tag">Systems</span><span class="pc-tag">Profiling</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(139,92,246,.1)">🎨</div><a class="pc-lk" href="https://github.com/Sriram004/Metal-Shader-Application" target="_blank">GitHub ↗</a></div><div class="pc-n">Metal Shader Application</div><div class="pc-d">GPU-accelerated rendering application using Apple Metal framework with custom vertex and fragment shaders.</div><div class="pc-tags"><span class="pc-tag">Metal</span><span class="pc-tag">Swift</span><span class="pc-tag">GPU</span></div></div>
+  </div>
+  <div class="pc-sec-hd">🤖 AI & ML</div>
+  <div class="pc-gr">
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(0,229,196,.1)">🔺</div><a class="pc-lk" href="https://github.com/Sriram004/Mesh-Normalization-Quantization-and-Reconstruction-Error-Analysis-for-3D-AI-Pipelines" target="_blank">GitHub ↗</a></div><div class="pc-n">3D AI Mesh Analysis Pipeline</div><div class="pc-d">Mesh normalization, quantization, and reconstruction error analysis for 3D AI model pipelines.</div><div class="pc-tags"><span class="pc-tag">Python</span><span class="pc-tag">3D AI</span><span class="pc-tag">ML</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(245,158,11,.1)">📐</div><a class="pc-lk" href="https://github.com/Sriram004/Flam-RnD-CurveFit" target="_blank">GitHub ↗</a></div><div class="pc-n">Flam R&D CurveFit</div><div class="pc-d">Curve fitting research and development project for mathematical model optimization and parameter estimation.</div><div class="pc-tags"><span class="pc-tag">Python</span><span class="pc-tag">SciPy</span><span class="pc-tag">R&D</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(96,165,250,.1)">🏠</div><a class="pc-lk" href="https://github.com/Sriram004/AR-Interior-Application" target="_blank">GitHub ↗</a></div><div class="pc-n">AR Interior Application</div><div class="pc-d">Augmented reality interior design application with real-time 3D furniture placement and room visualization.</div><div class="pc-tags"><span class="pc-tag">AR</span><span class="pc-tag">Swift</span><span class="pc-tag">ARKit</span></div></div>
+    <div class="pc"><div class="pc-top"><div class="pc-ic" style="background:rgba(139,92,246,.1)">🔥</div><a class="pc-lk" href="https://github.com/Sriram004/Flam" target="_blank">GitHub ↗</a></div><div class="pc-n">Flam</div><div class="pc-d">Creative platform project exploring interactive visual effects and real-time rendering capabilities.</div><div class="pc-tags"><span class="pc-tag">Creative Tech</span><span class="pc-tag">Rendering</span></div></div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ═══ -->
+<section class="fsec" id="sk-sec">
+  <div class="fsec-hd"><div class="fsec-tag">// 04 — SKILLS</div><h2 class="fsec-ti">Technical Arsenal</h2></div>
+  <div class="sk-gr">
+    <div class="sk-c"><div class="sk-ti">🛡 Detection & Response</div><div class="sk-tw"><span class="sk-tg">Microsoft Sentinel</span><span class="sk-tg">Cortex XDR</span><span class="sk-tg">Splunk</span><span class="sk-tg">QRadar</span><span class="sk-tg">SIEM/SOAR</span><span class="sk-tg">Sigma Rules</span><span class="sk-tg">UEBA</span><span class="sk-tg">EDR</span><span class="sk-tg">IDS/IPS</span><span class="sk-tg">NIDS</span><span class="sk-tg">NMS</span><span class="sk-tg">Nozomi Vantage</span><span class="sk-tg">Claroty SRA</span><span class="sk-tg">OT/ICS Security</span><span class="sk-tg">Threat Hunting</span><span class="sk-tg">IOC Analysis</span><span class="sk-tg">MITRE ATT&CK</span><span class="sk-tg">Nessus</span><span class="sk-tg">Metasploit</span><span class="sk-tg">Wireshark</span><span class="sk-tg">ServiceNow</span></div></div>
+    <div class="sk-c"><div class="sk-ti">⚙ Security Engineering</div><div class="sk-tw"><span class="sk-tg">Python</span><span class="sk-tg">FastAPI</span><span class="sk-tg">REST APIs</span><span class="sk-tg">PostgreSQL</span><span class="sk-tg">Docker</span><span class="sk-tg">Linux CLI</span><span class="sk-tg">Git/GitHub</span><span class="sk-tg">Bash</span><span class="sk-tg">Firewall Analysis</span><span class="sk-tg">Email Security</span><span class="sk-tg">Proxy Tools</span></div></div>
+    <div class="sk-c"><div class="sk-ti">💻 Frontend & Full Stack</div><div class="sk-tw"><span class="sk-tg">React</span><span class="sk-tg">TypeScript</span><span class="sk-tg">Node.js</span><span class="sk-tg">JavaScript</span><span class="sk-tg">SQL</span><span class="sk-tg">MongoDB</span><span class="sk-tg">MySQL</span><span class="sk-tg">RBAC</span><span class="sk-tg">Row-Level Security</span></div></div>
+    <div class="sk-c"><div class="sk-ti">☁ Cloud & DevOps</div><div class="sk-tw"><span class="sk-tg">AWS Fundamentals</span><span class="sk-tg">Azure Data Factory</span><span class="sk-tg">Snowflake</span><span class="sk-tg">Databricks</span><span class="sk-tg">Docker</span><span class="sk-tg">Linux</span></div></div>
+    <div class="sk-c"><div class="sk-ti">◉ Core CS</div><div class="sk-tw"><span class="sk-tg">Data Structures & Algorithms</span><span class="sk-tg">OOP</span><span class="sk-tg">Operating Systems</span><span class="sk-tg">Computer Networks</span><span class="sk-tg">TCP/IP</span><span class="sk-tg">UDP</span><span class="sk-tg">HTTP</span><span class="sk-tg">Socket Programming</span></div></div>
+  </div>
+</section>
+
+<!-- ═══ CERTIFICATIONS ═══ -->
+<section class="fsec" id="cert-sec">
+  <div class="fsec-hd"><div class="fsec-tag">// 05 — CERTIFICATIONS</div><h2 class="fsec-ti">Credentials (30+)</h2></div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">🔰 Fortinet</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">🔰</div><div><div class="cert-n">Fortinet Certified Associate Cybersecurity</div><div class="cert-by">Fortinet</div><div class="cert-dt">Issued Mar 2026 · Expires Mar 2028</div><a class="cert-lk" href="https://www.credly.com/badges/f3a66e78-98eb-421a-83d6-78d6497b36c1" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🔰</div><div><div class="cert-n">Fortinet Certified Fundamentals Cybersecurity</div><div class="cert-by">Fortinet</div><div class="cert-dt">Issued Mar 2026 · Expires Mar 2028</div><a class="cert-lk" href="https://www.credly.com/badges/47d35a5a-4297-47e8-9d86-8d9742ff1008" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🔰</div><div><div class="cert-n">Introduction to the Threat Landscape 3.0</div><div class="cert-by">Fortinet</div><div class="cert-dt">Issued Mar 2026</div><a class="cert-lk" href="https://www.credly.com/badges/3df2ff39-6763-4d32-a542-04189196592a" target="_blank">Show Credential ↗</a></div></div>
+    </div>
+  </div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">🔍 Google</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">🔍</div><div><div class="cert-n">Google Security Operations — SOAR Developer</div><div class="cert-by">Google</div><a class="cert-lk" href="https://www.skills.google/course_templates/568/badge" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🔍</div><div><div class="cert-n">Security Operations Fundamentals</div><div class="cert-by">Google</div><a class="cert-lk" href="https://www.skills.google/paths/581/course_templates/971/badge" target="_blank">Show Credential ↗</a></div></div>
+    </div>
+  </div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">🔥 Palo Alto Networks</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">🔥</div><div><div class="cert-n">Security Operations Fundamentals</div><div class="cert-by">Palo Alto Networks</div></div></div>
+      <div class="cert-c"><div class="cert-ic">🔥</div><div><div class="cert-n">Endpoint Security</div><div class="cert-by">Palo Alto Networks</div></div></div>
+    </div>
+  </div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">🎯 TryHackMe</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">🎯</div><div><div class="cert-n">Junior Security Analyst Path</div><div class="cert-by">TryHackMe</div><a class="cert-lk" href="https://tryhackme.com/room/jrsecanalystintrouxo" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🎯</div><div><div class="cert-n">System Operator Certification (SOC)</div><div class="cert-by">TryHackMe</div></div></div>
+    </div>
+  </div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">⚡ LetsDefend / Picus</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">⚡</div><div><div class="cert-n">Splunk Engineer</div><div class="cert-by">LetsDefend</div><div class="cert-dt">Issued Feb 2026</div><a class="cert-lk" href="https://app.letsdefend.io/my-rewards/detail/cd298133351649c29cbab8055b2f67be" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🔵</div><div><div class="cert-n">BAS vs Traditional Security</div><div class="cert-by">Picus Security</div></div></div>
+    </div>
+  </div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">🌐 Cisco / EC-Council</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">🌐</div><div><div class="cert-n">Endpoint Security</div><div class="cert-by">Cisco Networking Academy</div><a class="cert-lk" href="https://www.credly.com/badges/9a4c3735-6c47-44bc-a26e-cba9fd062109" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">☁</div><div><div class="cert-n">Cloud Computing Fundamentals</div><div class="cert-by">EC-Council</div><a class="cert-lk" href="https://learn.eccouncil.org/certificate/ffeb5d6a-72bb-4fc4-bf59-458c48f8f942" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">📋</div><div><div class="cert-n">Agile Product Management</div><div class="cert-by">EC-Council</div><a class="cert-lk" href="https://learn.eccouncil.org/certificate/baeeb359-3572-4ad9-a1c6-d6d1d4eb2380" target="_blank">Show Credential ↗</a></div></div>
+    </div>
+  </div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">📊 Forage / Tata</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">📊</div><div><div class="cert-n">GenAI Powered Data Analytics Job Simulation</div><div class="cert-by">Tata / Forage</div><div class="cert-dt">Issued Aug 2025 · ID: DcZh66SgmhbZogMNQ</div><a class="cert-lk" href="https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/ifobHAoMjQs9s6bKS/gMTdCXwDdLYoXZ3wG_ifobHAoMjQs9s6bKS_jMEYQHqdduPawNNLv_1756123171204_completion_certificate.pdf" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🛡</div><div><div class="cert-n">Cybersecurity Analyst Job Simulation</div><div class="cert-by">Tata / Forage</div><div class="cert-dt">Issued Aug 2025 · ID: yut2snZBk32u73FFS</div><a class="cert-lk" href="https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/ifobHAoMjQs9s6bKS/gmf3ypEXBj2wvfQWC_ifobHAoMjQs9s6bKS_jMEYQHqdduPawNNLv_1756093135710_completion_certificate.pdf" target="_blank">Show Credential ↗</a></div></div>
+    </div>
+  </div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">🐍 HackerRank / Udemy / Scaler</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">🐍</div><div><div class="cert-n">Python Basic Course</div><div class="cert-by">HackerRank</div><div class="cert-dt">Issued Feb 2025 · Expires Feb 2028</div><a class="cert-lk" href="https://www.hackerrank.com/certificates/c215aa060a29" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🗄</div><div><div class="cert-n">SQL Basic</div><div class="cert-by">HackerRank</div><div class="cert-dt">Issued Feb 2025 · Expires Feb 2028</div><a class="cert-lk" href="https://www.hackerrank.com/certificates/e7b9ed049771" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">☕</div><div><div class="cert-n">Java Developer Course</div><div class="cert-by">Udemy</div><div class="cert-dt">Issued Sep 2023</div><a class="cert-lk" href="https://www.udemy.com/certificate/UC-96a758a9-a0b6-44bf-8dfd-e802068f2661/" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">📐</div><div><div class="cert-n">Design & Analysis of Algorithms Masterclass</div><div class="cert-by">Udemy</div><div class="cert-dt">Issued May 2024</div><a class="cert-lk" href="https://www.udemy.com/certificate/UC-d5c41b78-3ffa-45b6-83f4-19484b479d1b/" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🗃</div><div><div class="cert-n">DBMS — Fundamentals & Advanced</div><div class="cert-by">Scaler Topics</div><div class="cert-dt">Issued Apr 2024</div><a class="cert-lk" href="https://moonshot.scaler.com/s/sl/zZhXkqrJcH" target="_blank">Show Credential ↗</a></div></div>
+    </div>
+  </div>
+  <div class="cert-grp">
+    <div class="cert-grp-hd">🛠 HCL GUVI / Great Learning</div>
+    <div class="cert-gr">
+      <div class="cert-c"><div class="cert-ic">🛠</div><div><div class="cert-n">Advanced Cyber Security & Ethical Hacking</div><div class="cert-by">HCL GUVI · ID: L17r26T8067X3HO22p</div><a class="cert-lk" href="https://www.guvi.in/verify-certificate.html?id=L17r26T8067X3HO22p&course=cyber_security_advanced_english" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🛠</div><div><div class="cert-n">Ethical Hacking</div><div class="cert-by">HCL GUVI · ID: 20p140hFWv7624gE9a</div><a class="cert-lk" href="https://www.guvi.in/share-certificate/20p140hFWv7624gE9a" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🛠</div><div><div class="cert-n">Cyber Security for Beginners</div><div class="cert-by">HCL GUVI · ID: UP1mr198886v7468HR</div><a class="cert-lk" href="https://www.guvi.in/share-certificate/UP1mr198886v7468HR" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🎓</div><div><div class="cert-n">Security Management Course</div><div class="cert-by">Great Learning</div><div class="cert-dt">Issued Oct 2024</div><a class="cert-lk" href="https://olympus.mygreatlearning.com/courses/88573/certificate?pb_id=581" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🎓</div><div><div class="cert-n">Cyber Risk Management</div><div class="cert-by">Great Learning</div><div class="cert-dt">Issued May 2024</div><a class="cert-lk" href="https://olympus.mygreatlearning.com/courses/105577/certificate?pb_id=581" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🎓</div><div><div class="cert-n">Cyber Forensics Course</div><div class="cert-by">Great Learning</div><div class="cert-dt">Issued Aug 2022</div><a class="cert-lk" href="https://olympus.mygreatlearning.com/courses/65868/certificate?pb_id=581" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🎓</div><div><div class="cert-n">Introduction to Ethical Hacking</div><div class="cert-by">Great Learning</div><div class="cert-dt">Issued Jul 2022</div><a class="cert-lk" href="https://olympus.mygreatlearning.com/courses/12629/certificate?pb_id=581" target="_blank">Show Credential ↗</a></div></div>
+      <div class="cert-c"><div class="cert-ic">🐍</div><div><div class="cert-n">Introduction to Programming Using Python</div><div class="cert-by">Code Gallata</div><div class="cert-dt">Issued May 2023</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PUBLICATIONS ═══ -->
+<section class="fsec" id="pub-sec">
+  <div class="fsec-hd"><div class="fsec-tag">// 06 — PUBLICATIONS</div><h2 class="fsec-ti">Research Work</h2></div>
+  <div class="pub-c"><div class="pub-type">📄 Journal Article · 2025</div><div class="pub-ti">Malware Detection System using Compact Data Learning and AI Models</div><div class="pub-jr">International Journal of Computer Applications — Sriram S., et al. · 2025</div></div>
+  <div class="pub-c" style="border-left-color:var(--p)"><div class="pub-type" style="color:var(--p)">📘 Conference Paper · 2026 · Scopus-Indexed</div><div class="pub-ti">Federated Explainable AI Framework for Indian Smart Agriculture: Implementation and Performance Evaluation in Tamil Nadu Farming Systems</div><div class="pub-jr">ICRETM 2026 — Accepted for Scopus-indexed publication · 2026</div></div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="fsec" id="ct-sec">
+  <div class="fsec-hd"><div class="fsec-tag">// 07 — CONTACT</div><h2 class="fsec-ti">Let's Connect</h2></div>
+  <div class="ct-gr">
+    <div class="ct-info">
+      <div class="ct-it"><div class="ct-ic">📧</div><div><div class="ct-lb">EMAIL</div><div class="ct-vl"><a href="mailto:sriram.ks11a@gmail.com">sriram.ks11a@gmail.com</a></div></div></div>
+      <div class="ct-it"><div class="ct-ic">📱</div><div><div class="ct-lb">PHONE</div><div class="ct-vl">+91-9080356859</div></div></div>
+      <div class="ct-it"><div class="ct-ic">💼</div><div><div class="ct-lb">LINKEDIN</div><div class="ct-vl"><a href="https://linkedin.com/in/sriram-s-815842291" target="_blank">linkedin.com/in/sriram-s-815842291</a></div></div></div>
+      <div class="ct-it"><div class="ct-ic">⌥</div><div><div class="ct-lb">GITHUB</div><div class="ct-vl"><a href="https://github.com/Sriram004" target="_blank">github.com/Sriram004</a></div></div></div>
+      <div class="ct-it"><div class="ct-ic">⬇</div><div><div class="ct-lb">RESUME</div><div class="ct-vl"><a href="https://drive.google.com/drive/folders/1IMk1LXuA6neijjAUMRqVjvsQJVrIK2Bn" target="_blank">Google Drive →</a></div></div></div>
+    </div>
+    <div class="ct-cta">
+      <div style="font-size:2.5rem">🛡</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--tx)">Open to Opportunities</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.75;max-width:280px">Seeking SOC Analyst, Detection Engineer, and Security Engineer roles in Bangalore. Let's build something secure.</div>
+      <a class="ct-btn" href="mailto:sriram.ks11a@gmail.com">✉ Send a Message</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="ft">© 2026 Sriram S — All rights reserved</div>
+  <div class="ft">Security Engineer · SOC Analyst · Detection Engineer</div>
+</footer>
+
+</main>
+
+<script>
+// NAV
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.ls-a').forEach(a=>a.classList.remove('active'));
+  document.querySelectorAll('.ls-a').forEach(a=>{if(a.getAttribute('onclick')===`goTo('${id}')`)a.classList.add('active')});
+}
+// SCROLL SPY
+const spy=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){
+  const id=x.target.id;
+  document.querySelectorAll('.ls-a').forEach(a=>a.classList.remove('active'));
+  document.querySelectorAll('.ls-a').forEach(a=>{if(a.getAttribute('onclick')===`goTo('${id}')`)a.classList.add('active')});
+}}),{threshold:.2});
+['dash','about-sec','exp-sec','proj-sec','sk-sec','cert-sec','pub-sec','ach-sec','ct-sec'].forEach(s=>{const el=document.getElementById(s);if(el)spy.observe(el)});
+
+// LIVE CLOCK
+function updateClock(){
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  const ampm=now.getHours()>=12?'PM':'AM';
+  const h12=now.getHours()%12||12;
+  document.getElementById('live-time').textContent=`${String(h12).padStart(2,'0')}:${m}:${s} ${ampm} IST`;
+}
+updateClock();setInterval(updateClock,1000);
+
+// COUNTERS
+setTimeout(()=>{
+  document.querySelectorAll('.si-n[data-target]').forEach(el=>{
+    const t=parseInt(el.dataset.target),sf=el.dataset.suf||'+';
+    let c=0,step=t/40;
+    const tmr=setInterval(()=>{c=Math.min(c+step,t);el.textContent=Math.floor(c)+sf;if(c>=t)clearInterval(tmr)},30);
+  });
+  document.querySelectorAll('.cb-fi[data-w]').forEach(el=>{el.style.width=el.dataset.w});
+},500);
+
+// RADAR CHART
+function drawRadar(){
+  const c=document.getElementById('radarCanvas');
+  if(!c)return;
+  const dpr=window.devicePixelRatio||1;
+  const W=c.clientWidth||280,H=155;
+  c.width=W*dpr;c.height=H*dpr;
+  c.style.width=W+'px';c.style.height=H+'px';
+  const ctx=c.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const cx=W/2,cy=H/2-5,R=Math.min(W,H)/2-22;
+  const skills=[
+    {l:'Detection',v:.95},{l:'Incident\nResponse',v:.90},{l:'Engineering',v:.85},
+    {l:'Development',v:.75},{l:'Cloud/\nDevOps',v:.80},{l:'Analysis',v:.88}
+  ];
+  const n=skills.length;
+  const ang=i=>-Math.PI/2+(2*Math.PI/n)*i;
+  const pt=(i,r)=>[cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))];
+  // rings
+  [.2,.4,.6,.8,1].forEach(p=>{
+    ctx.beginPath();
+    for(let i=0;i<n;i++){const[x,y]=pt(i,R*p);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+    ctx.closePath();ctx.strokeStyle=`rgba(255,255,255,${p===1?.09:.05})`;ctx.lineWidth=1;ctx.stroke();
+  });
+  // axes
+  for(let i=0;i<n;i++){ctx.beginPath();ctx.moveTo(cx,cy);const[x,y]=pt(i,R);ctx.lineTo(x,y);ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=1;ctx.stroke()}
+  // fill
+  ctx.beginPath();
+  skills.forEach((s,i)=>{const[x,y]=pt(i,R*s.v);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});
+  ctx.closePath();
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R);
+  g.addColorStop(0,'rgba(139,92,246,.45)');g.addColorStop(1,'rgba(59,130,246,.12)');
+  ctx.fillStyle=g;ctx.fill();
+  ctx.strokeStyle='rgba(139,92,246,.75)';ctx.lineWidth=1.5;ctx.stroke();
+  // dots
+  skills.forEach((s,i)=>{const[x,y]=pt(i,R*s.v);ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle='#8B5CF6';ctx.fill()});
+  // labels
+  ctx.fillStyle='rgba(148,163,184,.85)';ctx.font=`${Math.max(7,W/38)}px JetBrains Mono,monospace`;
+  skills.forEach((s,i)=>{
+    const[lx,ly]=pt(i,R+16);
+    const a=ang(i);
+    ctx.textAlign=Math.abs(Math.cos(a))<.2?'center':Math.cos(a)>0?'left':'right';
+    ctx.textBaseline='middle';
+    s.l.split('\n').forEach((ln,j,arr)=>ctx.fillText(ln,lx,ly+(j-(arr.length-1)/2)*11));
+  });
+}
+window.addEventListener('load',drawRadar);
+
+// GITHUB HEATMAP
+function genHeatmap(){
+  const c=document.getElementById('gh-heat');if(!c)return;
+  const cols=['var(--bg3)','rgba(0,229,196,.12)','rgba(0,229,196,.28)','rgba(0,229,196,.55)','rgba(0,229,196,.85)'];
+  const W=c.clientWidth||265,cellSize=7,gap=2,numW=Math.floor((W)/(cellSize+gap));
+  for(let w=0;w<numW;w++){
+    const col=document.createElement('div');col.className='gh-col';
+    for(let d=0;d<7;d++){
+      const cell=document.createElement('div');cell.className='gh-cell';
+      const recency=w/numW;
+      const base=recency>.75?3:recency>.5?2:recency>.25?1:0;
+      const lvl=Math.min(4,base+Math.floor(Math.random()*2));
+      cell.style.background=cols[lvl];
+      col.appendChild(cell);
+    }
+    c.appendChild(col);
+  }
+}
+genHeatmap();
+
+// ACTIVITY FEED — rotate items
+const afItems=[
+  {ic:'🔴',ev:'Sigma rule triggered',sub:'Possible PowerShell Empire activity',tm:'just now'},
+  {ic:'🟡',ev:'New IOC added',sub:'malicious-ip-193.199.109.153',tm:'2m ago'},
+  {ic:'🟠',ev:'Alert triaged',sub:'Severity: High · Host: WIN-DC-01',tm:'8m ago'},
+  {ic:'🟢',ev:'Playbook executed',sub:'Containment workflow triggered',tm:'15m ago'},
+  {ic:'🔵',ev:'Threat hunt completed',sub:'No threats found in environment',tm:'22m ago'},
+  {ic:'🔴',ev:'New lateral movement',sub:'Detected on host SRV-PROD-02',tm:'30m ago'},
+  {ic:'🟡',ev:'Rule update applied',sub:'Sigma ruleset v2.1.4 deployed',tm:'45m ago'},
+];
+let afIdx=0;
+function rotateActivity(){
+  const list=document.getElementById('af-list');if(!list)return;
+  const item=afItems[afIdx%afItems.length];afIdx++;
+  const div=document.createElement('div');div.className='af-it';
+  div.innerHTML=`<div class="af-ico">${item.ic}</div><div class="af-b"><div class="af-ev">${item.ev}</div><div class="af-sub">${item.sub}</div><div class="af-tm">${item.tm}</div></div>`;
+  list.insertBefore(div,list.firstChild);
+  if(list.children.length>5)list.removeChild(list.lastChild);
+}
+setInterval(rotateActivity,6000);
+
+// TIF counter flicker
+setInterval(()=>{
+  const el=document.getElementById('ioc-count');
+  if(el)el.textContent=Math.floor(Math.random()*5+1);
+  const el2=document.getElementById('ttp-count');
+  if(el2)el2.textContent=Math.floor(Math.random()*8+8);
+},8000);
+</script>
